@@ -8,7 +8,7 @@ A simple and stylish web-based music player built with HTML, CSS, and JavaScript
 ├── app.js             # JavaScript logic for player
 ├── index.html         # HTML markup
 ├── styles.css         # CSS for styling
-└── README.md          # Project documentation```
+└── README.md          # Project documentation
 ```
 ## Features
 - Play/Pause music
