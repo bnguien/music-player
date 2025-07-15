@@ -119,15 +119,19 @@ const app = {
            if(audio.duration) {
                 const progressPercent = Math.floor(audio.currentTime / audio.duration * 100);
                 progress.value = progressPercent;
-                progress.style.setProperty('--value', progressPercent);
+                  document.querySelector('.progress-bar').style.width = `${progressPercent}%`;
+                  if(progressPercent === 100) {
+                    _this.isPlaying = false;
+                    player.classList.remove('playing');
+                  }
             }
         }
         //Xử lý khi tua bài hát
         progress.onchange = function (e) {
             const seekTime = audio.duration * e.target.value / 100;
             audio.currentTime = seekTime;
-            
         }
+        //Xử lý cd quay
     },
     loadCurrentSong: function () {
         heading.textContent = this.currentSong.name;
