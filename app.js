@@ -8,6 +8,7 @@
     8. Active song
     9. Scroll active song into view
     10. Play song when click
+    11. Xử lý thao tác qua bàn phím
 */
 
 const $ = document.querySelector.bind(document);
@@ -146,6 +147,29 @@ const app = {
                 audio.play();
             }
         }
+        //Xử lý khi nhấn spacebar để phát/dừng audio
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') {
+                if (audio.paused) {
+                    audio.play();
+                } else {
+                    audio.pause();
+                }
+            }
+        });
+        //Xử lý next, prev khi nhấn phím -> hoặc <-
+        document.addEventListener('keydown', function (e) {
+            switch (e.code) {
+                case 'ArrowRight':
+
+                    nextBtn.click();
+                    break;
+                case 'ArrowLeft':
+
+                    prevBtn.click();
+                    break;
+            }
+        });
         //Xử lý khi bài hát được play
         audio.onplay = function () {
             _this.isPlaying = true;
@@ -172,7 +196,7 @@ const app = {
                 }
 
                 $('.start-time span').textContent = formatTime(currentTime);
-                $('.end-time span').textContent = formatTime(duration-currentTime);
+                $('.end-time span').textContent = formatTime(duration - currentTime);
             }
         }
 
@@ -258,8 +282,8 @@ const app = {
         audio.src = this.currentSong.path;
         $('.start-time span').textContent = formatTime(0);
         audio.onloadedmetadata = function () {
-        $('.end-time span').textContent = formatTime(audio.duration);
-    };
+            $('.end-time span').textContent = formatTime(audio.duration);
+        };
     },
     loadConfig: function () {
         this.isRandom = this.config.isRandom;
