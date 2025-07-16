@@ -171,6 +171,8 @@ header p {
   background-color: var(--background-color);
   margin-top: 450px;
   padding: 12px;
+   overflow-y: auto;
+   max-height: 400px;
 }
 .song {
   display: flex;
