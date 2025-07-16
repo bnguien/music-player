@@ -65,7 +65,7 @@ header p {
     justify-content: space-around;
     align-items: center;
     margin: 10px 0;
-    color: var(--primary-color);
+    color: var(--secondary-color);
     font-size: 14px;
 }
 
@@ -101,7 +101,9 @@ header p {
     color: var(--background-color);
     font-size: 24px;
 }
-
+.control .active {
+    color: var(--primary-color);
+}
 .progress-container {
     position: relative;
     width: 100%;
@@ -143,10 +145,20 @@ header p {
 .progress::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
+    opacity: 0;
     background-color: var(--white-color);
+    cursor: pointer;
+    position: relative;
+    z-index: 10;
+}
+.progress:hover::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    opacity: 1 ;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
     cursor: pointer;
     position: relative;
     z-index: 10;
