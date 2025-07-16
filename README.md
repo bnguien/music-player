@@ -17,7 +17,7 @@ A simple and stylish web-based music player built with HTML, CSS, and JavaScript
 - Custom audio progress bar
 - Responsive UI
 ## Demo
-<img width="535" height="896" alt="image" src="https://github.com/user-attachments/assets/36f173c5-f962-40f4-bdd8-f34cdc78da9b" />
+<img width="398" height="827" alt="image" src="https://github.com/user-attachments/assets/31c92e42-0190-4140-afba-6d7b45468d20" />
 
 ## How to Use
 1. **Clone the repository:**
