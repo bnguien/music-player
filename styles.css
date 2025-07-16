@@ -108,10 +108,24 @@ header p {
     color: var(--primary-color);
 }
 .progress-container {
-    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
     width: 100%;
-    margin-bottom: 20px;
-    height: 4px;
+    padding: 0 10px;
+    box-sizing: border-box;
+}
+
+.start-time, .end-time {
+    font-size: 14px;
+    color: var(--white-color);
+    white-space: nowrap;
+}
+
+.progress-wrapper {
+    position: relative;
+    flex: 1; 
+    height: 3px;
 }
 
 .progress-track {
@@ -148,12 +162,15 @@ header p {
 .progress::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    opacity: 0;
-    background-color: var(--white-color);
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
     cursor: pointer;
-    position: relative;
     z-index: 10;
+    position: relative;
 }
+
 .progress:hover::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
