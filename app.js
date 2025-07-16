@@ -12,6 +12,11 @@
 
 const $ = document.querySelector.bind(document);
 const $$ = document.querySelectorAll.bind(document);
+function formatTime(seconds) {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs < 10 ? '0' + secs : secs}`;
+}
 
 const PLAYER_STORAGE_KEY = 'BN_PLAYER';
 const player = $('.player');
@@ -34,7 +39,7 @@ const app = {
     isRandom: false,
     isRepeat: false,
     playedSongs: [],
-    config: JSON.parse(localStorage.getItem(PLAYER_STORAGE_KEY))||{},
+    config: JSON.parse(localStorage.getItem(PLAYER_STORAGE_KEY)) || {},
     songs: [
         {
             name: "BIRDS OF A FEATHER",
@@ -85,7 +90,7 @@ const app = {
             image: "./assets/img/7.jpg"
         }
     ],
-    setConfig: function(key, value){
+    setConfig: function (key, value) {
         this.config[key] = value;
         localStorage.setItem(PLAYER_STORAGE_KEY, JSON.stringify(this.config))
     },
@@ -156,6 +161,8 @@ const app = {
         //Khi tiến độ bài hát thay đổi
         audio.ontimeupdate = function () {
             if (audio.duration) {
+                const currentTime = audio.currentTime;
+                const duration = audio.duration;
                 const progressPercent = Math.floor(audio.currentTime / audio.duration * 100);
                 progress.value = progressPercent;
                 progressBar.style.width = `${progressPercent}%`;
@@ -163,6 +170,9 @@ const app = {
                     _this.isPlaying = false;
                     player.classList.remove('playing');
                 }
+
+                $('.start-time span').textContent = formatTime(currentTime);
+                $('.end-time span').textContent = formatTime(duration-currentTime);
             }
         }
 
@@ -172,8 +182,8 @@ const app = {
             audio.currentTime = seekTime;
         }
         //Xử lý khi click next song
-        nextBtn.onclick = function () { 
-            if( _this.isRandom) {
+        nextBtn.onclick = function () {
+            if (_this.isRandom) {
                 _this.randomSong();
             } else {
                 _this.nextSong();
@@ -183,40 +193,40 @@ const app = {
             _this.scrollToActiveSong();
         }
         //Xử lý khi click prev song
-        prevBtn.onclick = function (){
-            if( _this.isRandom) {
+        prevBtn.onclick = function () {
+            if (_this.isRandom) {
                 _this.randomSong();
             } else {
                 _this.prevSong();
-            }   
+            }
             audio.play();
             _this.render();
             _this.scrollToActiveSong();
         }
         //Xử lý khi random song
-        randomBtn.onclick = function(){
-           _this.isRandom = !_this.isRandom;
-           _this.setConfig('isRandom', _this.isRandom);
+        randomBtn.onclick = function () {
+            _this.isRandom = !_this.isRandom;
+            _this.setConfig('isRandom', _this.isRandom);
             randomBtn.classList.toggle('active', _this.isRandom);
             _this.scrollToActiveSong();
         }
         //Xử lý khi bài hát kết thúc
-        audio.onended = function(){
-           if(_this.isRepeat) {
+        audio.onended = function () {
+            if (_this.isRepeat) {
                 audio.play();
             }
-            else{
+            else {
                 nextBtn.click();
             }
         }
         //Xử lý khi repeat được click
-        repeatBtn.onclick = function(){
+        repeatBtn.onclick = function () {
             _this.isRepeat = !_this.isRepeat;
             _this.setConfig('isRepeat', _this.isRepeat);
             repeatBtn.classList.toggle('active', _this.isRepeat);
         }
         playlist.onclick = function (e) {
-           const songNode = e.target.closest('.song:not(.active)');
+            const songNode = e.target.closest('.song:not(.active)');
             if (songNode || e.target.closest('.option')) {
                 //Xử lý khi click vào bài hát
                 if (songNode) {
@@ -234,7 +244,7 @@ const app = {
         }
     },
     scrollToActiveSong: function () {
-        setTimeout(()=>{
+        setTimeout(() => {
             $('.song.active').scrollIntoView({
                 behavior: 'smooth',
                 block: 'start'
@@ -246,39 +256,43 @@ const app = {
         singer.textContent = this.currentSong.singer;
         cdThumb.style.backgroundImage = `url('${this.currentSong.image}')`;
         audio.src = this.currentSong.path;
+        $('.start-time span').textContent = formatTime(0);
+        audio.onloadedmetadata = function () {
+        $('.end-time span').textContent = formatTime(audio.duration);
+    };
     },
-    loadConfig: function(){
+    loadConfig: function () {
         this.isRandom = this.config.isRandom;
         this.isRepeat = this.config.isRepeat;
     },
-    nextSong : function(){
+    nextSong: function () {
         this.currentIndex++;
-        if(this.currentIndex >= this.songs.length){
+        if (this.currentIndex >= this.songs.length) {
             this.currentIndex = 0;
         }
         this.loadCurrentSong();
     },
-    prevSong: function(){
+    prevSong: function () {
         this.currentIndex--;
-        if(this.currentIndex < 0){
-            this.currentIndex=this.songs.length - 1;;
+        if (this.currentIndex < 0) {
+            this.currentIndex = this.songs.length - 1;;
         }
         this.loadCurrentSong();
     },
     randomSong: function () {
         let newIndex;
-        if(this.playedSongs.length >= this.songs.length-1) {
+        if (this.playedSongs.length >= this.songs.length - 1) {
             this.playedSongs = [];
         }
         do {
             newIndex = Math.floor(Math.random() * this.songs.length);
-        } while (newIndex === this.currentIndex || 
+        } while (newIndex === this.currentIndex ||
             this.playedSongs.includes(newIndex));
         this.playedSongs.push(newIndex);
         this.currentIndex = newIndex;
         this.loadCurrentSong();
     },
-    nextSongWhenEnded: function(){
+    nextSongWhenEnded: function () {
         if (this.isRandom) {
             this.randomSong();
         } else {
