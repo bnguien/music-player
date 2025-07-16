@@ -3,6 +3,7 @@
     --white-color: #ffffff;
     --background-color: #121212;
     --secondary-color: gray;
+    --third-color: #be3144;
 
 }
 
@@ -72,7 +73,9 @@ header p {
 .control div {
     margin: 10px 20px;
 }
-
+.control:hover{
+    cursor: pointer;
+}
 .control .btn-next,
 .control .btn-prev {
     font-size: 24px;
@@ -182,6 +185,10 @@ header p {
 .song .body {
     flex: 1;
     margin: 20px;
+}
+.song.active{
+    color: var(--white-color);
+    background-color: var(--third-color);
 }
 .cd {
   display: flex;
